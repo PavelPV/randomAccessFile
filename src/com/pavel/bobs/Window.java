@@ -78,6 +78,10 @@ public class Window {
 		b_Confirm.setSize(80, 30);
 		b_Confirm.setLocation(406, 140);
 		
+		JButton b_BigCheck = new JButton("Check");
+		b_BigCheck.setSize(80, 30);
+		b_BigCheck.setLocation(406, 190);
+		
 		JLabel l_Prop = new JLabel("Properties: ");
 		l_Prop.setSize(100, 20);
 		l_Prop.setLocation(20, 100);
@@ -95,6 +99,7 @@ public class Window {
 		JScrollPane sp_ResultLog = new JScrollPane(ta_ResultLog);
 		sp_ResultLog.setSize(371, 410);
 		sp_ResultLog.setLocation(500, 130);
+		ta_ResultLog.setEditable(false);
 		ta_ResultLog.setColumns(30);
 		ta_ResultLog.setRows(23);
 		
@@ -112,6 +117,7 @@ public class Window {
 		panel.add(tf_SymbolIndex);
 		panel.add(b_Check);
 		panel.add(b_Confirm);
+		panel.add(b_BigCheck);
 		panel.add(l_Prop);
 		panel.add(sp_Prop, BorderLayout.CENTER);
 		panel.add(l_ResultLog);
@@ -243,7 +249,7 @@ public class Window {
 			
 		});
 		
-//		frame.setContentPane(panel);
+		frame.setContentPane(panel);
 		frame.setVisible(true);
 	}
 }

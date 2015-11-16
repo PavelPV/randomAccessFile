@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -146,6 +147,60 @@ public class Window {
 						ta_ResultLog.setText(log);
 					} catch (IOException e) {
 						e.printStackTrace();
+					}
+				}
+			}
+			
+		});
+		
+		b_BigCheck.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if ((ta_Prop.getText()!=null)&&(!"".equals(ta_Prop.getText()))) {
+					
+					List<Object[]> log = new ArrayList<Object[]>() {
+						public String toString() {
+							String ret = "";
+							for(Object[] o: this) {
+								ret += o[0] + " " + o[1] + " " + o[2] + " " + o[3] + " " + o[4] + "\n"; 
+							}
+							return ret;
+						}
+					};
+					
+					String prop = ta_Prop.getText();
+					StringTokenizer tokenizer = new StringTokenizer(prop, "\n");
+					ta_ResultLog.setText("");
+					
+					while(tokenizer.hasMoreTokens()) {
+						String temp = tokenizer.nextToken();
+						try {
+							App app = new App(tf_FileName.getText());
+							String marker = temp.split("=")[0];
+							String newText = temp.split("=")[1];
+							List<Integer> listOfIndex = app.getAllIndexOf(marker);
+							List<Integer> listOfLines = app.getAllLinesOf(marker);
+							
+
+							if (!listOfIndex.isEmpty()) {
+								for(int i = 0; i < listOfIndex.size(); i++) {
+									Object[] obj = new Object[5];
+									obj[0] = true;
+									obj[1] = marker;
+									obj[2] = newText;
+									obj[3] = listOfLines.get(i);
+									obj[4] = listOfIndex.get(i);
+									log.add(obj);
+								}
+
+							} else {
+								log.add(new Object[]{"Marker " + marker + " not found"});
+							}
+							ta_ResultLog.setText(log.toString());
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}
 					}
 				}
 			}

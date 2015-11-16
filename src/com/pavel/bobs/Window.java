@@ -24,7 +24,7 @@ public class Window {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Change labels");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setBounds(250, 100, 900, 600);
+		frame.setBounds(200, 80, 900, 600);
 		frame.setResizable(false);
 		
 		JPanel panel = new JPanel();
@@ -132,7 +132,7 @@ public class Window {
 					try {
 						App app = new App(tf_FileName.getText());					
 						List<Integer> listOfIndex = app.getAllIndexOf(tf_Marker.getText());
-						List<Integer> listOfLines = app.getAllLinesOf(tf_Marker.getText());
+						List<String> listOfLines = app.getAllLinesOf(tf_Marker.getText());
 						String log = "";
 						if (!listOfIndex.isEmpty()) {
 							log = "Marker " + tf_Marker.getText() + " found at: \n";
@@ -180,7 +180,7 @@ public class Window {
 							String marker = temp.split("=")[0];
 							String newText = temp.split("=")[1];
 							List<Integer> listOfIndex = app.getAllIndexOf(marker);
-							List<Integer> listOfLines = app.getAllLinesOf(marker);
+							List<String> listOfLines = app.getAllLinesOf(marker);
 							
 
 							if (!listOfIndex.isEmpty()) {
@@ -197,11 +197,12 @@ public class Window {
 							} else {
 								log.add(new Object[]{"Marker " + marker + " not found"});
 							}
-							ta_ResultLog.setText(log.toString());
+							
 						} catch (IOException e2) {
 							e2.printStackTrace();
 						}
 					}
+					LogWindow logW = new LogWindow(log, tf_FileName.getText(), cb_Mode.getSelectedIndex());
 				}
 			}
 			

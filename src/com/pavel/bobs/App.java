@@ -160,10 +160,10 @@ public class App {
 		return listOfIndex;
 	}
 	
-	public List<Integer> getAllLinesOf(String marker) throws IOException {
+	public List<String> getAllLinesOf(String marker) throws IOException {
 		this.raFile.seek(0);
 		
-		List<Integer> listOfLines = new ArrayList<Integer>();
+		List<String> listOfLines = new ArrayList<String>();
 		
 		String temp = this.raFile.readLine();
 		
@@ -177,7 +177,7 @@ public class App {
 			if (temp==null) {
 				break;
 			}
-			listOfLines.add(count);
+			listOfLines.add(temp);
 			temp = this.raFile.readLine();
 			count++;
 		}

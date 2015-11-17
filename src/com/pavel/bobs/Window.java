@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
@@ -130,15 +132,14 @@ public class Window {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!"".equals(tf_Marker.getText())) {
 					try {
-						App app = new App(tf_FileName.getText());					
-						List<Integer> listOfIndex = app.getAllIndexOf(tf_Marker.getText());
-						List<String> listOfLines = app.getAllLinesOf(tf_Marker.getText());
+						App app = new App(tf_FileName.getText());
+						Map<Integer, String> mapOfIndex = app.getAllIndexAndLinesOf(tf_Marker.getText());
 						String log = "";
-						if (!listOfIndex.isEmpty()) {
+						if (!mapOfIndex.isEmpty()) {
 							log = "Marker " + tf_Marker.getText() + " found at: \n";
 							StringBuilder str = new StringBuilder(log);
-							for(int i = 0; i < listOfIndex.size(); i++) {
-								str.append("line : " + listOfLines.get(i) + " symbol №: " + listOfIndex.get(i) + "\n");
+							for(Entry<Integer, String> entry: mapOfIndex.entrySet()) {
+								str.append("line : " + entry.getValue() + " symbol №: " + entry.getKey() + "\n");
 							}
 							log = str.toString();
 						} else {
@@ -179,21 +180,17 @@ public class Window {
 							App app = new App(tf_FileName.getText());
 							String marker = temp.split("=")[0];
 							String newText = temp.split("=")[1];
-							List<Integer> listOfIndex = app.getAllIndexOf(marker);
-							List<String> listOfLines = app.getAllLinesOf(marker);
-							
-
-							if (!listOfIndex.isEmpty()) {
-								for(int i = 0; i < listOfIndex.size(); i++) {
+							Map<Integer, String> mapOfIndex = app.getAllIndexAndLinesOf(marker);
+							if (!mapOfIndex.isEmpty()) {
+								for(Entry<Integer, String> entry: mapOfIndex.entrySet()) {
 									Object[] obj = new Object[5];
 									obj[0] = true;
 									obj[1] = marker;
 									obj[2] = newText;
-									obj[3] = listOfLines.get(i);
-									obj[4] = listOfIndex.get(i);
+									obj[3] = entry.getValue();
+									obj[4] = entry.getKey();
 									log.add(obj);
 								}
-
 							} else {
 								log.add(new Object[]{"Marker " + marker + " not found"});
 							}

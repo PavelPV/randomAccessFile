@@ -4,7 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class App {
 	
@@ -129,6 +132,41 @@ public class App {
 		return index;
 	}
 	
+	public Map<Integer, String> getAllIndexAndLinesOf(String marker) throws IOException {
+		this.raFile.seek(0);
+		
+		Map<Integer, String> mapOfIndex = new TreeMap<Integer, String>();
+		
+		String temp = this.raFile.readLine();
+		
+		while (temp!=null) {
+			while((temp!=null)&&(!temp.contains(marker))) {
+				temp = this.raFile.readLine();
+			}
+			
+			if (temp==null) {
+				break;
+			}
+			String sub = temp;
+			while(sub.contains(marker)) {
+				int lineLength = sub.length() + 2;
+				
+				int posAtLine = sub.indexOf(marker);
+				
+				int index = (int)this.raFile.getFilePointer();
+				
+				index = index - (lineLength- posAtLine);
+				
+				mapOfIndex.put(index, temp);
+				
+				sub = sub.substring(posAtLine + marker.length());
+			}
+			
+			temp = this.raFile.readLine();			
+		}
+		return mapOfIndex;
+	}
+	
 	public List<Integer> getAllIndexOf(String marker) throws IOException {
 		this.raFile.seek(0);
 		
@@ -144,46 +182,50 @@ public class App {
 			if (temp==null) {
 				break;
 			}
-			
-			int lineLength = temp.length() + 2;
-			
-			int posAtLine = temp.indexOf(marker);
-			
-			int index = (int)this.raFile.getFilePointer();
-			
-			index = index - (lineLength- posAtLine);
-			
-			listOfIndex.add(index);
+			String sub = temp;
+			while(sub.contains(marker)) {
+				int lineLength = sub.length() + 2;
+				
+				int posAtLine = sub.indexOf(marker);
+				
+				int index = (int)this.raFile.getFilePointer();
+				
+				index = index - (lineLength- posAtLine);
+				
+				listOfIndex.add(index);
+				
+				sub = sub.substring(posAtLine + marker.length());
+			}
 			
 			temp = this.raFile.readLine();			
 		}		
 		return listOfIndex;
 	}
 	
-	public List<String> getAllLinesOf(String marker) throws IOException {
-		this.raFile.seek(0);
-		
-		List<String> listOfLines = new ArrayList<String>();
-		
-		String temp = this.raFile.readLine();
-		
-		int count = 1;
-		
-		while(temp!=null) {
-			while((temp!=null)&&(!temp.contains(marker))) {
-				temp = this.raFile.readLine();
-				count++;
-			}
-			if (temp==null) {
-				break;
-			}
-			listOfLines.add(temp);
-			temp = this.raFile.readLine();
-			count++;
-		}
-		
-		return listOfLines;
-	}
+//	public List<String> getAllLinesOf(String marker) throws IOException {
+//		this.raFile.seek(0);
+//		
+//		List<String> listOfLines = new ArrayList<String>();
+//		
+//		String temp = this.raFile.readLine();
+//		
+//		int count = 1;
+//		
+//		while(temp!=null) {
+//			while((temp!=null)&&(!temp.contains(marker))) {
+//				temp = this.raFile.readLine();
+//				count++;
+//			}
+//			if (temp==null) {
+//				break;
+//			}
+//			listOfLines.add(temp);
+//			temp = this.raFile.readLine();
+//			count++;
+//		}
+//		
+//		return listOfLines;
+//	}
 
 	public String getFileName() {
 		return fileName;
